@@ -32,7 +32,7 @@
           "otherOptions": [],
           "currentVersion": {
             "id": "yamlgreet",
-            "name": "Recommanded workflow"
+            "name": "Greeting workflow"
           },
           "upgradeOptions": [],
           "migrationOptions": [],
