@@ -28,7 +28,7 @@
           "otherOptions": [],
           "currentVersion": {
             "id": "yamlgreet",
-            "name": "Yamlgreet"
+            "name": "Greeting workflow"
           },
           "upgradeOptions": [],
           "migrationOptions": [],
