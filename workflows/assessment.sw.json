@@ -17,10 +17,6 @@
         "workflowOptions": {
           "newOptions": [
             {
-              "id": "yamlgreet",
-              "name": "Greeting workflow"
-            },
-            {
               "id": "wait-or-error",
               "name": "Wait or Error"
             },
