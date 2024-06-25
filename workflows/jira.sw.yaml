@@ -1,0 +1,37 @@
+id: jira
+version: "1.0"
+specVersion: "0.8"
+name: jira
+description: Open jira issue
+functions:
+  - name: jiraGetIssue
+    operation: specs/jira-openapi.json#getIssue
+start: poll issue
+states:
+  - name: poll issue
+    type: operation
+    actions:
+      - name: get issue
+        actionDataFilter:
+          toStateData: .jiraGetIssueResult
+        functionRef:
+          refName: jiraGetIssue
+          arguments:
+            issueIdOrKey: KAN-1
+        sleep:
+          before: PT10S
+    transition: check status
+  - name: check status
+    type: switch
+    dataConditions:
+      - name: not done
+        condition: .jiraGetIssueResult.fields.status.statusCategory.key != "done"
+        transition: poll issue
+    defaultCondition:
+      transition:
+        nextState: print done
+  - name: print done
+    type: inject
+    data:
+      message: done
+    end: true
