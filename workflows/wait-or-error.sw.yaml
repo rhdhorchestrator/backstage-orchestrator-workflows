@@ -13,18 +13,24 @@ functions:
   - name: logFunction
     type: custom
     operation: sysout
-  - name: throwError
-    operation: specs/actions-openapi.json#unknown-action
 states:
   - name: ChooseOnState
     type: switch
     dataConditions:
       - condition: ${ .state == "Wait" }
-        transition: WaitTimeout
+        transition: WaitFlow
       - condition: ${ .state == "Error" }
-        transition: ThrowError
+        transition: ErrorFlow
     defaultCondition:
       transition: WaitTimeout
+  - name: WaitFlow
+    type: inject
+    data:
+      result:
+        outputs:
+          - key: dataFeed
+            value: This string is produced while waiting
+    transition: WaitTimeout
   - name: WaitTimeout
     type: callback
     action:
@@ -35,12 +41,55 @@ states:
           message: Callback
     eventRef: callbackEvent
     timeouts:
-      eventTimeout: PT20S
+      eventTimeout: PT10S
+    transition: ProduceOutput
+  - name: ProduceOutput
+    type: inject
+    data:
+      result:
+        completedWith: success
+        message: A human-readable description of the error.
+        nextWorkflows:
+          - id: next-workflow-id
+            name: Suggested next workflow 
+          - id: second-next-workflow-id
+            name: Less important next workflow
+        outputs:
+          - key: resourceOne
+            value: FirstCreatedResourceName
+          - key: resourceTwo
+            value: SecondCreatedResourceName
+            format: text
+          - key: countOfSomething
+            value: 42
+            format: number
+          - key: Important link somewhere
+            value: https://foo.bar
+            format: link
+          - key: Important link somewhere else
+            value: https://foo.bar.com
+            format: link
+      foo: Whatever other data for backward compatibility
     end: true
-  - name: ThrowError
-    type: operation
-    actions:
-      - name: throwError
-        functionRef:
-          refName: throwError
+  - name: ErrorFlow
+    type: inject
+    data:
+      result:
+        completedWith: error
+        message: A human-readable description of the error. However, still some additional output could be produced till an error occurred.
+        outputs:
+          - key: resourceOne
+            value: FirstCreatedResourceName
+          - key: resourceTwo
+            value: SecondCreatedResourceName
+            format: text
+          - key: countOfSomething
+            value: 42
+            format: number
+          - key: Important link somewhere
+            value: https://foo.bar
+            format: link
+          - key: Important link somewhere else
+            value: https://foo.bar.com
+            format: link
     end: true
