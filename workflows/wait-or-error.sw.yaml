@@ -3,8 +3,11 @@ version: "1.0"
 specVersion: "0.8"
 name: Wait or Error
 description: Simple workflow to simulate waiting for callback or error
-dataInputSchema: schemas/wait-or-error__main-schema.json
 start: ChooseOnState
+dataInputSchema: schemas/wait-or-error__main-schema.json
+extensions:
+  - extensionid: workflow-output-schema
+    outputSchema: schemas/workflow-result-schema.json
 events:
   - name: callbackEvent
     type: wait-or-error
@@ -26,10 +29,9 @@ states:
   - name: WaitFlow
     type: inject
     data:
-      result:
-        outputs:
-          - key: dataFeed
-            value: This string is produced while waiting
+      outputs:
+        - key: dataFeed
+          value: This string is produced while waiting and will be replaced by later output
     transition: WaitTimeout
   - name: WaitTimeout
     type: callback
@@ -46,50 +48,47 @@ states:
   - name: ProduceOutput
     type: inject
     data:
-      result:
-        completedWith: success
-        message: A human-readable description of the error.
-        nextWorkflows:
-          - id: next-workflow-id
-            name: Suggested next workflow 
-          - id: second-next-workflow-id
-            name: Less important next workflow
-        outputs:
-          - key: resourceOne
-            value: FirstCreatedResourceName
-          - key: resourceTwo
-            value: SecondCreatedResourceName
-            format: text
-          - key: countOfSomething
-            value: 42
-            format: number
-          - key: Important link somewhere
-            value: https://foo.bar
-            format: link
-          - key: Important link somewhere else
-            value: https://foo.bar.com
-            format: link
-      foo: Whatever other data for backward compatibility
+      completedWith: success
+      message: A human-readable description of the completion status.
+      nextWorkflows:
+        - id: next-workflow-id
+          name: Suggested next workflow
+        - id: second-next-workflow-id
+          name: Less important next workflow
+      outputs:
+        - key: resourceOne
+          value: FirstCreatedResourceName
+        - key: resourceTwo
+          value: SecondCreatedResourceName
+          format: text
+        - key: countOfSomething
+          value: 42
+          format: number
+        - key: Important link somewhere
+          value: https://foo.bar
+          format: link
+        - key: Important link somewhere else
+          value: https://foo.bar.com
+          format: link
     end: true
   - name: ErrorFlow
     type: inject
     data:
-      result:
-        completedWith: error
-        message: A human-readable description of the error. However, still some additional output could be produced till an error occurred.
-        outputs:
-          - key: resourceOne
-            value: FirstCreatedResourceName
-          - key: resourceTwo
-            value: SecondCreatedResourceName
-            format: text
-          - key: countOfSomething
-            value: 42
-            format: number
-          - key: Important link somewhere
-            value: https://foo.bar
-            format: link
-          - key: Important link somewhere else
-            value: https://foo.bar.com
-            format: link
+      completedWith: error
+      message: A human-readable description of the error. However, still some additional output could be produced till an error occurred.
+      outputs:
+        - key: resourceOne
+          value: FirstCreatedResourceName
+        - key: resourceTwo
+          value: SecondCreatedResourceName
+          format: text
+        - key: countOfSomething
+          value: 42
+          format: number
+        - key: Important link somewhere
+          value: https://foo.bar
+          format: link
+        - key: Important link somewhere else
+          value: https://foo.bar.com
+          format: link
     end: true
