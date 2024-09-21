@@ -7,7 +7,7 @@ start: ChooseOnState
 dataInputSchema: schemas/wait-or-error__main-schema.json
 extensions:
   - extensionid: workflow-output-schema
-    outputSchema: schemas/workflow-result-schema.json
+    outputSchema: schemas/workflow-output-schema.json
 events:
   - name: callbackEvent
     type: wait-or-error
