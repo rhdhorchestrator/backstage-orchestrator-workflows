@@ -25,13 +25,14 @@ states:
       - condition: ${ .state == "Error" }
         transition: ErrorFlow
     defaultCondition:
-      transition: WaitTimeout
+      transition: WaitFlow
   - name: WaitFlow
     type: inject
     data:
-      outputs:
-        - key: dataFeed
-          value: This string is produced while waiting and will be replaced by later output
+      result:
+        outputs:
+          - key: dataFeed
+            value: This string is produced while waiting and will be replaced by later output
     transition: WaitTimeout
   - name: WaitTimeout
     type: callback
@@ -52,9 +53,9 @@ states:
         completedWith: success
         message: A human-readable description of the completion status.
         nextWorkflows:
-          - id: next-workflow-id
+          - id: yamlgreet
             name: Suggested next workflow
-          - id: second-next-workflow-id
+          - id:   hello_world
             name: Less important next workflow
         outputs:
           - key: resourceOne
