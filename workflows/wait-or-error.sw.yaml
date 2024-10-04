@@ -1,3 +1,13 @@
+# - name: WaitFlow
+#   type: inject
+#   data:
+#     result:
+#       outputs:
+#         - key: dataFeed
+#           value: This string is produced while waiting and will be replaced by later output
+#     extraVariable: ${ $WORKFLOW.instanceId }
+#   transition: WaitTimeout
+
 id: wait-or-error
 version: "1.0"
 specVersion: "0.8"
@@ -16,6 +26,19 @@ functions:
   - name: logFunction
     type: custom
     operation: sysout
+  - name: PrintProgressData
+    type: expression
+    operation: '{
+      "result": {
+      "outputs": [
+      {
+      "key": "dataFeed",
+      "value": "This string is produced while waiting and will be replaced by later output"
+      }
+      ]
+      },
+      "extraVariable": $WORKFLOW.instanceId
+      }'
 states:
   - name: ChooseOnState
     type: switch
@@ -27,12 +50,10 @@ states:
     defaultCondition:
       transition: WaitFlow
   - name: WaitFlow
-    type: inject
-    data:
-      result:
-        outputs:
-          - key: dataFeed
-            value: This string is produced while waiting and will be replaced by later output
+    type: operation
+    actions:
+      - name: Fill progress data
+        functionRef: PrintProgressData
     transition: WaitTimeout
   - name: WaitTimeout
     type: callback
@@ -55,7 +76,7 @@ states:
         nextWorkflows:
           - id: yamlgreet
             name: Suggested next workflow
-          - id:   hello_world
+          - id: hello_world
             name: Less important next workflow
         outputs:
           - key: resourceOne
