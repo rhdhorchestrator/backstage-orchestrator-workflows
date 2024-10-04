@@ -1,13 +1,3 @@
-# - name: WaitFlow
-#   type: inject
-#   data:
-#     result:
-#       outputs:
-#         - key: dataFeed
-#           value: This string is produced while waiting and will be replaced by later output
-#     extraVariable: ${ $WORKFLOW.instanceId }
-#   transition: WaitTimeout
-
 id: wait-or-error
 version: "1.0"
 specVersion: "0.8"
@@ -26,18 +16,83 @@ functions:
   - name: logFunction
     type: custom
     operation: sysout
-  - name: PrintProgressData
+  - name: PrintSuccessData
     type: expression
     operation: '{
       "result": {
+      "message": "A human-readable description of the completion status.",
+      "nextWorkflows": [
+      {
+      "id": "yamlgreet",
+      "name": "Let us get a greeting"
+      },
+      {
+      "id": "hello_world",
+      "name": "Enjoy the world"
+      }
+      ],
       "outputs": [
       {
-      "key": "dataFeed",
-      "value": "This string is produced while waiting and will be replaced by later output"
-      }
-      ]
+      "key": "resourceOne",
+      "value": $WORKFLOW.instanceId
       },
-      "extraVariable": $WORKFLOW.instanceId
+      {
+      "key": "resourceTwo",
+      "value": "SecondCreatedResourceName",
+      "format": "text"
+      },
+      {
+      "key": "countOfSomething",
+      "value": 42,
+      "format": "number"
+      },
+      {
+      "key": "Important link somewhere",
+      "value": "https://foo.bar",
+      "format": "link"
+      },
+      {
+      "key": "Important link somewhere else",
+      "value": "https://foo.bar.com",
+      "format": "link"
+      }
+      ],
+      "completedWith": "success"
+      }
+      }'
+  - name: PrintErrorData
+    type: expression
+    operation: '{
+      "result": {
+      "message": "A human-readable description of the error. However, still some additional output could be produced till an error occurred.",
+      "outputs": [
+      {
+      "key": "resourceOne",
+      "value": $WORKFLOW.instanceId
+      },
+      {
+      "key": "resourceTwo",
+      "value": "SecondCreatedResourceName",
+      "format": "text"
+      },
+      {
+      "key": "countOfSomething",
+      "value": 42,
+      "format": "number"
+      },
+      {
+      "key": "Important link somewhere",
+      "value": "https://foo.bar",
+      "format": "link"
+      },
+      {
+      "key": "Important link somewhere else",
+      "value": "https://foo.bar.com",
+      "format": "link"
+      }
+      ],
+      "completedWith": "error"
+      }
       }'
 states:
   - name: ChooseOnState
@@ -50,12 +105,6 @@ states:
     defaultCondition:
       transition: WaitFlow
   - name: WaitFlow
-    type: operation
-    actions:
-      - name: Fill progress data
-        functionRef: PrintProgressData
-    transition: WaitTimeout
-  - name: WaitTimeout
     type: callback
     action:
       name: logCallback
@@ -68,51 +117,14 @@ states:
       eventTimeout: PT10S
     transition: ProduceOutput
   - name: ProduceOutput
-    type: inject
-    data:
-      result:
-        completedWith: success
-        message: A human-readable description of the completion status.
-        nextWorkflows:
-          - id: yamlgreet
-            name: Suggested next workflow
-          - id: hello_world
-            name: Less important next workflow
-        outputs:
-          - key: resourceOne
-            value: FirstCreatedResourceName
-          - key: resourceTwo
-            value: SecondCreatedResourceName
-            format: text
-          - key: countOfSomething
-            value: 42
-            format: number
-          - key: Important link somewhere
-            value: https://foo.bar
-            format: link
-          - key: Important link somewhere else
-            value: https://foo.bar.com
-            format: link
+    type: operation
+    actions:
+      - name: Fill progress data
+        functionRef: PrintSuccessData
     end: true
   - name: ErrorFlow
-    type: inject
-    data:
-      result:
-        completedWith: error
-        message: A human-readable description of the error. However, still some additional output could be produced till an error occurred.
-        outputs:
-          - key: resourceOne
-            value: FirstCreatedResourceName
-          - key: resourceTwo
-            value: SecondCreatedResourceName
-            format: text
-          - key: countOfSomething
-            value: 42
-            format: number
-          - key: Important link somewhere
-            value: https://foo.bar
-            format: link
-          - key: Important link somewhere else
-            value: https://foo.bar.com
-            format: link
+    type: operation
+    actions:
+      - name: Fill progress data
+        functionRef: PrintErrorData
     end: true
