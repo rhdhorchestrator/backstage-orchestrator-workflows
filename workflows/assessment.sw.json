@@ -8,14 +8,22 @@
     "workflow-type/assessment"
   ],
   "dataInputSchema": "schemas/assessment__main-schema.json",
+  "extensions": [
+      {
+        "extensionid": "workflow-output-schema",
+        "outputSchema": "schemas/workflow-output-schema.json"
+      }
+   ],
   "start": "Inject options",
   "states": [
     {
       "name": "Inject options",
       "type": "inject",
       "data": {
-        "workflowOptions": {
-          "newOptions": [
+        "result": {
+          "completedWith": "success",
+          "message": "Completed with success",
+          "nextWorkflows": [            
             {
               "id": "wait-or-error",
               "name": "Wait or Error"
@@ -23,16 +31,8 @@
             {
               "id": "hello_world",
               "name": "Hello World Workflow"
-            }
-          ],
-          "otherOptions": [],
-          "currentVersion": {
-            "id": "yamlgreet",
-            "name": "Greeting workflow"
-          },
-          "upgradeOptions": [],
-          "migrationOptions": [],
-          "continuationOptions": []
+            }            
+          ]          
         }
       },
       "end": true
