@@ -44,9 +44,6 @@ states:
               sourceControl: github.com
         actionDataFilter:
           toStateData: .actionFetchTemplateSourceCodeResult
-    onErrors:
-      - errorRef: Error on Action
-        transition: Handle Error
     compensatedBy: Clear File System - Source Code
     transition: Generating the CI Component
   - name: Generating the CI Component
@@ -83,9 +80,6 @@ states:
               sourceControl: github.com
         actionDataFilter:
           toStateData: .actionTemplateFetchCIResult
-    onErrors:
-      - errorRef: Error on Action
-        transition: Handle Error
     compensatedBy: Clear File System - CI
     transition: Generating the Catalog Info Component
   - name: Generating the CI Component - Tekton
@@ -116,9 +110,6 @@ states:
               sourceControl: github.com
         actionDataFilter:
           toStateData: .actionTemplateFetchCIResult
-    onErrors:
-      - errorRef: Error on Action
-        transition: Handle Error
     compensatedBy: Clear File System - CI
     transition: Generating the Catalog Info Component
   - name: Generating the Catalog Info Component
@@ -146,9 +137,6 @@ states:
               sourceControl: github.com
         actionDataFilter:
           toStateData: .actionFetchTemplateCatalogInfoResult
-    onErrors:
-      - errorRef: Error on Action
-        transition: Handle Error
     compensatedBy: Clear File System - Catalog
     transition: Publishing to the Source Code Repository
   - name: Publishing to the Source Code Repository
@@ -169,9 +157,6 @@ states:
             allowRebaseMerge: true
         actionDataFilter:
           toStateData: .actionPublishResult
-    onErrors:
-      - errorRef: Error on Action
-        transition: Handle Error
     compensatedBy: Remove Source Code Repository
     transition: Registering the Catalog Info Component
   - name: Registering the Catalog Info Component
@@ -186,21 +171,8 @@ states:
             catalogInfoPath: '"/catalog-info.yaml"'
         actionDataFilter:
           toStateData: .actionCatalogRegisterResult
-    onErrors:
-      - errorRef: Error on Action
-        transition: Handle Error
     compensatedBy: Remove Catalog Info Component
     end: true
-  - name: Handle Error
-    type: operation
-    actions:
-      - name: Error Action
-        functionRef:
-          refName: sysout
-          arguments:
-            message: Error on workflow, triggering compensations
-    end:
-      compensate: true
   - name: Clear File System - Source Code
     type: operation
     usedForCompensation: true
