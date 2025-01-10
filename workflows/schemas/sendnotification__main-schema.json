@@ -1,0 +1,22 @@
+{
+    "$id": "classpath:/schemas/sendnotification__main-schema.json",
+    "title": "Data Input Schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "title": {
+            "title": "Title",
+            "description": "Title of the notification",
+            "type": "string"
+        },
+        "recipients": {
+            "title": "Recipients",
+            "description": "List of recipients",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": ["title", "recipients"]
+}
