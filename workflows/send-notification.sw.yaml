@@ -1,0 +1,57 @@
+id: sendnotification
+version: '1.0'
+specVersion: '0.8'
+name: Notifications sender
+description: YAML based workflow for sending notifications
+dataInputSchema: schemas/sendnotification__main-schema.json
+start: Prepare
+extensions:
+  - extensionid: workflow-output-schema
+    outputSchema: schemas/workflow-output-schema.json
+  - extensionid: workflow-uri-definitions
+    definitions:
+      notifications: "https://raw.githubusercontent.com/rhdhorchestrator/serverless-workflows/main/workflows/shared/specs/notifications-openapi.yaml"
+functions:
+  - name: createNotification
+    operation: notifications#createNotification
+  - name: PrintOutput
+    type: expression
+    operation: '{
+      "result": {
+        "message": "A notification is sent.",
+        "completedWith": "success"
+        }
+      }'
+states:
+  - name: Prepare
+    type: inject
+    data:
+      topic: "Manually sent"
+    transition: SendNotification
+  - name: SendNotification
+    type: operation
+    actions:
+      - functionRef:
+          refName: createNotification
+          arguments:
+            recipients:
+              type: "entity"
+              entityRef: .recipients
+            payload:
+              title: .title
+              description: "Description of the notification"
+              topic: .topic
+              link: "https://www.redhat.com"
+              severity: "normal"
+    transition: Finish
+  - name: Finish
+    type: operation
+    actions:
+      - name: Print output
+        functionRef:
+           refName: PrintOutput
+        actionDataFilter:
+          toStateData: ".result"
+    stateDataFilter:
+      output: ". += .result"
+    end: true
