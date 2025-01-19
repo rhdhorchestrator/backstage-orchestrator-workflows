@@ -1,0 +1,18 @@
+id: random-success-or-error
+version: "1.0"
+specVersion: 0.8.0
+name: Random Success or Error
+description: A simple workflow that returns an error if the current second is less than 30, and returns success if the second is 30 or greater.
+start: checkTime
+functions:
+  - name: 'divide by zero or one'
+    type: 'expression'
+    operation: "if (now | tonumber % 60) < 30 then 8/0 else 8/1 end"
+states:
+  - name: checkTime
+    type: operation
+    actions:
+      - name : divide
+        functionRef:
+          refName: divide by zero or one
+    end: true
