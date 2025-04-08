@@ -1,0 +1,68 @@
+{
+  "$id": "classpath:/schemas/dynamic_schema__main-schema.json",
+  "title": "Data Input Schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "firstStep": {
+      "type": "object",
+      "title": "Example use",
+      "properties": {
+        "fooTheFirst": {
+          "type": "string",
+          "title": "First page simple input field"
+        },
+        "mySchemaUpdater": {
+          "type": "string",
+          "ui:widget": "SchemaUpdater",
+          "ui:props": {
+            "fetch:url": "https://raw.githubusercontent.com/mareklibra/generated-workflow-templates/refs/heads/main/uiSchemaChunks/chunk01.json"
+          }
+        },
+        "placeholderOne": {
+          "type": "string",
+          "title": "This field and its title are visible until replaced by any SchemaUpdater."
+        },
+        "placeholderThree": {
+          "ui:widget": "hidden",
+          "title": "Not shown by default, can be enabled by SchemaUpdater later by replacing this content. The key ('placeholderThree') is the identifier in chunks fetched by SchemaUpdater."
+        }
+      }
+    },
+    "secondStep": {
+      "type": "object",
+      "title": "Second page of the wizard",
+      "properties": {
+        "fooTheSecond": {
+          "type": "string",
+          "title": "Second page simple input field"
+        },
+        "placeholderTwo": {
+          "type": "string",
+          "title": "This title is used until replaced by any SchemaUpdater"
+        },
+        "myAnotherSchemaUpdater": {
+          "type": "string",
+          "ui:widget": "SchemaUpdater",
+          "ui:props": {
+            "fetch:url": "https://raw.githubusercontent.com/mareklibra/generated-workflow-templates/refs/heads/main/uiSchemaChunks/chunk02.json"
+          }
+        },
+        "placeholderFour": {
+          "ui:widget": "hidden"
+        },
+        "failingSchemaUpdater": {
+          "type": "string",
+          "ui:widget": "SchemaUpdater",
+          "ui:props": {
+            "fetch:url": "https://this.is.non.existing.url"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "firstStep",
+    "secondStep"
+  ]
+}
