@@ -11,19 +11,14 @@
         },
         "recipients": {
             "title": "Recipients",
-            "description": "List of recipients",
+            "description": "A list of recipients for the notification in the format of 'user:<namespace>/<username>' or 'group:<namespace>/<groupname>', i.e. 'user:default/jsmith'",
             "type": "array",
             "items": {
-                "title": "Recipients",
-                "type": "array",
-                "description": "A list of recipients for the notification in the format of 'user:<namespace>/<username>' or 'group:<namespace>/<groupname>', i.e. 'user:default/jsmith'",
-                "items": {
-                    "title": "Recipient",
-                    "type": "string",
-                    "pattern": "^(user|group):[a-z0-9]([-a-z0-9]*[a-z0-9])?/([a-z0-9]([-a-z0-9]*[a-z0-9])?)$"
-                },
-                "minItems": 1
-            }
+                "title": "Recipient",
+                "type": "string",
+                "pattern": "^(user|group):[a-z0-9]([-a-z0-9]*[a-z0-9])?/([a-z0-9]([-a-z0-9]*[a-z0-9])?)$"
+            },
+            "minItems": 1
         }
     },
     "required": [
