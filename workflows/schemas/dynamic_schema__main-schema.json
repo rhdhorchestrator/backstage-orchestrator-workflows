@@ -16,7 +16,7 @@
           "type": "string",
           "ui:widget": "SchemaUpdater",
           "ui:props": {
-            "fetch:url": "https://raw.githubusercontent.com/mareklibra/generated-workflow-templates/refs/heads/main/uiSchemaChunks/chunk01.json"
+            "fetch:url": "https://raw.githubusercontent.com/rhdhorchestrator/backstage-orchestrator-workflows/refs/heads/main/uiSchemaChunks/chunk01.json"
           }
         },
         "placeholderOne": {
@@ -45,7 +45,7 @@
           "type": "string",
           "ui:widget": "SchemaUpdater",
           "ui:props": {
-            "fetch:url": "https://raw.githubusercontent.com/mareklibra/generated-workflow-templates/refs/heads/main/uiSchemaChunks/chunk02.json"
+            "fetch:url": "https://raw.githubusercontent.com/rhdhorchestrator/backstage-orchestrator-workflows/refs/heads/main/uiSchemaChunks/chunk02.json"
           }
         },
         "placeholderFour": {
