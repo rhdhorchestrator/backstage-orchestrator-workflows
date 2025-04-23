@@ -1,0 +1,11 @@
+{
+  "placeholderTwo": {
+    "type": "string",
+    "title": "This is input box supplied by chunk02, replacing addition by chunk01 to the same placeholderTwo"
+  },
+  "placeholderFour": {
+    "type": "string",
+    "title": "This is ActiveTextInput ui:widget to test preservation of state on placeholderFour",
+    "ui:widget": "ActiveTextInput"
+  }
+}
