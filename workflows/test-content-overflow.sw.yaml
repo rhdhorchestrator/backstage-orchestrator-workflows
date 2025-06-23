@@ -1,0 +1,201 @@
+id: test-content-overflow
+version: '1.0'
+specVersion: '0.8'
+name: Test content overflow
+description: >
+  Workflow with many states, inputs and results to test content overflow and large outputs in the result payload.    
+dataInputSchema: schemas/test-content-overflow.json
+extensions:
+  - extensionid: workflow-output-schema
+    outputSchema: schemas/workflow-output-schema.json
+start: State1
+states:
+  - name: State1
+    type: inject
+    data:
+      step: 1
+    transition: State2
+
+  - name: State2
+    type: inject
+    data:
+      step: 2
+    transition: State3
+
+  - name: State3
+    type: inject
+    data:
+      step: 3
+    transition: State4
+
+  - name: State4
+    type: inject
+    data:
+      step: 4
+    transition: State5
+
+  - name: State5
+    type: inject
+    data:
+      step: 5
+    transition: State6
+
+  - name: State6
+    type: inject
+    data:
+      step: 6
+    transition: State7
+
+  - name: State7
+    type: inject
+    data:
+      step: 7
+    transition: State8
+
+  - name: State8
+    type: inject
+    data:
+      step: 8
+    transition: State9
+
+  - name: State9
+    type: inject
+    data:
+      step: 9
+    transition: State10
+
+  - name: State10
+    type: inject
+    data:
+      step: 10
+    transition: State11
+
+  - name: State11
+    type: inject
+    data:
+      step: 11
+    transition: State12
+
+  - name: State12
+    type: inject
+    data:
+      step: 12
+    transition: State13
+
+  - name: State13
+    type: inject
+    data:
+      step: 13
+    transition: State14
+
+  - name: State14
+    type: inject
+    data:
+      step: 14
+    transition: State15
+
+  - name: State15
+    type: inject
+    data:
+      step: 15
+    transition: State16
+
+  - name: State16
+    type: inject
+    data:
+      step: 16
+    transition: State17
+
+  - name: State17
+    type: inject
+    data:
+      step: 17
+    transition: State18
+
+  - name: State18
+    type: inject
+    data:
+      step: 18
+    transition: State19
+
+  - name: State19
+    type: inject
+    data:
+      step: 19
+    transition: State20
+
+  - name: State20
+    type: inject
+    data:
+      step: 20
+      result:
+        completedWith: success
+        message: "Workflow completed successfully with lots of outputs."
+        nextWorkflows:
+          - id: next-1
+            name: Sample Next Workflow 1
+          - id: next-2
+            name: Sample Next Workflow 2
+        outputs:
+          - key: key-1
+            value: "Value number 1"
+            format: text
+          - key: key-2
+            value: "Value number 2"
+            format: text
+          - key: key-3
+            value: "Value number 3"
+            format: text
+          - key: key-4
+            value: "Value number 4"
+            format: text
+          - key: key-5
+            value: "Value number 5"
+            format: text
+          - key: key-6
+            value: "Value number 6"
+            format: text
+          - key: key-7
+            value: "Value number 7"
+            format: text
+          - key: key-8
+            value: "Value number 8"
+            format: text
+          - key: key-9
+            value: "Value number 9"
+            format: text
+          - key: key-10
+            value: "Value number 10"
+            format: text
+          - key: key-11
+            value: "Value number 11"
+            format: text
+          - key: key-12
+            value: "Value number 12"
+            format: text
+          - key: key-13
+            value: "Value number 13"
+            format: text
+          - key: key-14
+            value: "Value number 14"
+            format: text
+          - key: key-15
+            value: "Value number 15"
+            format: text
+          - key: key-16
+            value: "Value number 16"
+            format: text
+          - key: key-17
+            value: "Value number 17"
+            format: text
+          - key: key-18
+            value: "Value number 18"
+            format: text
+          - key: key-19
+            value: "Value number 19"
+            format: text
+          - key: key-20
+            value: "Value number 20"
+            format: text
+    end:
+      terminate: true
