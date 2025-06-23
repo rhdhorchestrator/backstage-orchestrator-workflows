@@ -1,0 +1,17 @@
+id: throw-error
+version: "1.0"
+specVersion: "0.8"
+name: Wait or Error
+description: Simulate workflow failing right away
+start: ThrowError
+functions:
+  - name: throwError
+    operation: specs/actions-openapi.json#unknown-action
+states:
+  - name: ThrowError
+    type: operation
+    actions:
+      - name: throwError
+        functionRef:
+          refName: throwError
+    end: true
