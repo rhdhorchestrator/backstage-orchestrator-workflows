@@ -25,7 +25,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   contact: {}
 servers:
-  - url: /
+  - url: /api/catalog
 components:
   examples: {}
   headers: {}
@@ -929,7 +929,7 @@ paths:
         - JWT: []
       parameters:
         - $ref: '#/components/parameters/uid'
-  /api/catalog/entities/by-name/{kind}/{namespace}/{name}:
+  /entities/by-name/{kind}/{namespace}/{name}:
     get:
       operationId: GetEntityByName
       tags:
