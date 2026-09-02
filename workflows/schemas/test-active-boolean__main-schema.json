@@ -1,0 +1,169 @@
+{
+    "$id": "classpath:/schemas/test-active-boolean__main-schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Test ActiveBoolean Widget",
+    "type": "object",
+    "description": "Testing ActiveBoolean widget with various fetch and ui:props configurations",
+    "properties": {
+      "basicTests": {
+        "type": "object",
+        "title": "Basic ActiveBoolean Tests",
+        "description": "Test basic fetch capabilities of ActiveBoolean widget",
+        "properties": {
+          "basicFeature": {
+            "type": "boolean",
+            "title": "Basic Feature Flag",
+            "description": "Fetches boolean value from API - uses stock > 50 as boolean",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/1",
+              "fetch:response:value": "stock > 50"
+            }
+          },
+          "featureWithDefault": {
+            "type": "boolean",
+            "title": "Feature with Static Default",
+            "description": "Has a static default that shows while fetch is loading",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/2",
+              "fetch:response:value": "stock > 100",
+              "fetch:response:default": true
+            }
+          },
+          "stringCoercion": {
+            "type": "boolean",
+            "title": "String to Boolean Coercion",
+            "description": "API returns string, widget coerces to boolean",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/3",
+              "fetch:response:value": "availabilityStatus != 'Low Stock'",
+              "fetch:response:default": false
+            }
+          },
+          "numberCoercion": {
+            "type": "boolean",
+            "title": "Number to Boolean Coercion",
+            "description": "API returns number, widget coerces to boolean",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/4",
+              "fetch:response:value": "stock",
+              "fetch:response:default": false
+            }
+          }
+        }
+      },
+      "retriggerTests": {
+        "type": "object",
+        "title": "Retrigger and Dependency Tests",
+        "description": "Test fetch:retrigger and dependent boolean fields",
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "title": "Product ID (Simulating Tenant)",
+            "description": "Select a product ID to see different boolean values",
+            "enum": ["5", "10", "15"],
+            "default": "5"
+          },
+          "dependentFeature": {
+            "type": "boolean",
+            "title": "Tenant-Specific Feature",
+            "description": "This boolean refetches when Product ID changes",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/$${{current.retriggerTests.tenantId}}",
+              "fetch:response:value": "stock > 30",
+              "fetch:retrigger": ["current.retriggerTests.tenantId"]
+            }
+          },
+          "clearOnRetriggerFeature": {
+            "type": "boolean",
+            "title": "Feature with Clear on Retrigger",
+            "description": "Clears before refetching",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/$${{current.retriggerTests.tenantId}}",
+              "fetch:response:value": "price > 500",
+              "fetch:retrigger": ["current.retriggerTests.tenantId"],
+              "fetch:clearOnRetrigger": true
+            }
+          }
+        }
+      },
+      "errorHandlingTests": {
+        "type": "object",
+        "title": "Error Handling Tests",
+        "description": "Test error handling and retry behavior",
+        "properties": {
+          "silentErrorFeature": {
+            "type": "boolean",
+            "title": "Silent Error Handling",
+            "description": "Errors are suppressed, shows default value",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/999999",
+              "fetch:response:value": "stock > 0",
+              "fetch:response:default": false,
+              "fetch:error:silent": true
+            }
+          },
+          "retryFeature": {
+            "type": "boolean",
+            "title": "Feature with Retry",
+            "description": "Retries up to 3 times with exponential backoff",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/6",
+              "fetch:response:value": "stock > 0",
+              "fetch:retry:maxAttempts": 3,
+              "fetch:retry:delay": 1000,
+              "fetch:retry:backoff": 2,
+              "fetch:retry:statusCodes": [404, 408, 429, 500, 502, 503, 504]
+            }
+          }
+        }
+      },
+      "advancedTests": {
+        "type": "object",
+        "title": "Advanced Tests",
+        "description": "Advanced scenarios and edge cases",
+        "properties": {
+          "readOnlyFeature": {
+            "type": "boolean",
+            "title": "Read-Only Feature Flag",
+            "description": "This boolean is fetched but cannot be changed",
+            "readOnly": true,
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/7",
+              "fetch:response:value": "stock > 0"
+            }
+          },
+          "skipInitialFeature": {
+            "type": "boolean",
+            "title": "Skip Initial Value",
+            "description": "Doesn't apply fetched value initially",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/1",
+              "fetch:response:value": "stock > 50",
+              "fetch:skipInitialValue": true
+            }
+          },
+          "complexSelectorFeature": {
+            "type": "boolean",
+            "title": "Complex JSONata Selector",
+            "description": "Uses complex JSONata expression",
+            "ui:widget": "ActiveBoolean",
+            "ui:props": {
+              "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/8",
+              "fetch:response:value": "(price > 100) and (stock > 10)",
+              "fetch:response:default": false
+            }
+          }
+        }
+      }
+    }
+  }

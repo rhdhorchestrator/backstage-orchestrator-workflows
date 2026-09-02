@@ -1,0 +1,32 @@
+id: test-active-boolean
+version: '1.0'
+specVersion: '0.8'
+name: Test ActiveBoolean Widget
+description: Testing ActiveBoolean widget with various fetch and ui:props configurations
+annotations:
+  - "workflow-type/infrastructure"
+dataInputSchema: schemas/test-active-boolean__main-schema.json
+extensions:
+  - extensionid: workflow-output-schema
+    outputSchema: schemas/workflow-output-schema.json
+start: StartState
+functions:
+  - name: runActionFunction
+    type: custom
+    operation: sysout
+  - name: successResult
+    type: expression
+    operation: '{ "result": { "message": "ActiveBoolean test completed successfully" } }'
+states:
+  - name: StartState
+    type: operation
+    actions:
+      - name: runAction
+        functionRef:
+          refName: runActionFunction
+          arguments:
+            message: '"Workflow completed with input: " + (. | tostring)'
+      - name: setOutput
+        functionRef:
+          refName: successResult
+    end: true
