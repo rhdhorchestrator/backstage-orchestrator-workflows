@@ -1,0 +1,55 @@
+{
+  "$id": "classpath:/schemas/create-pr-universal-input-schema.json",
+  "title": "Workflow input data for Universal Pull/Merge Request",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "approvalTool": {
+      "title": "Approval Tool",
+      "description": "The git provider tool to use for creating pull/merge requests",
+      "type": "string",
+      "enum": ["GIT", "GITLAB"]
+    },
+    "owner": {
+      "title": "Owner/Group",
+      "description": "The owner or group name (e.g., oandriie, my-org)",
+      "type": "string"
+    },
+    "repo": {
+      "title": "Repository Name",
+      "description": "The repository name (e.g., spring-test, my-repo)",
+      "type": "string"
+    },
+    "baseBranch": {
+      "title": "Target Branch",
+      "description": "The target branch for the pull/merge request",
+      "type": "string"
+    },
+    "targetBranch": {
+      "title": "Source Branch",
+      "description": "The source branch for the pull/merge request",
+      "type": "string"
+    },
+    "auth": {
+      "title": "Authentication",
+      "type": "string",
+      "ui:widget": "AuthRequester",
+      "ui:props": {
+        "authTokenDescriptors": [
+          {
+            "provider": "github",
+            "scope": "repo",
+            "tokenType": "oauth"
+          },
+          {
+            "provider": "gitlab",
+            "scope": "api",
+            "tokenType": "oauth"
+          }
+        ]
+      }
+    }
+  },
+  "required": ["approvalTool", "owner", "repo", "baseBranch", "targetBranch"]
+}
+

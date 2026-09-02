@@ -1,0 +1,118 @@
+id: gitlab-pr
+version: "1.0"
+specVersion: "0.8"
+name: "Create GitLab Merge Request"
+description: "This workflow creates a GitLab merge request."
+dataInputSchema: schemas/create-gitlab-pr-input-schema.json
+functions:
+  - name: scafolderMock
+    type: expression
+    operation: |
+      {
+        "files": [
+          {
+            "path": "README.md",
+            "content": "# Hello World"
+          },
+          {
+            "path": "index.js",
+            "content": "console.log('Hello, world!');"
+          }
+        ]
+      }
+  - name: searchProjects
+    operation: specs/gitlab.yaml#searchProjects
+  - name: getProject
+    operation: specs/gitlab.yaml#getProject
+  - name: createBranch
+    operation: specs/gitlab.yaml#createBranch
+  - name: createCommit
+    operation: specs/gitlab.yaml#createCommit
+  - name: createMergeRequest
+    operation: specs/gitlab.yaml#createMergeRequest
+  - name: extractProject
+    type: expression
+    operation: '${ .projectsList | map(select(.path_with_namespace == (.owner + "/" + .repo)))[0] }'
+  - name: successResult
+    type: expression
+    operation: '{
+        "result": {
+          "message": "Merge Request created",
+          "outputs":[
+              {
+                "key": "MR_URL",
+                "value": .mrURL.web_url,
+                "format":"link"
+              }
+            ]
+        }
+      }'
+  - name: sysLog
+    type: custom
+    operation: sysout:INFO
+start: "GetScafolderData"
+states:
+  - name: GetScafolderData
+    type: operation
+    actions:
+      - name: "Get Scafolder data"
+        functionRef:
+          refName: scafolderMock
+        actionDataFilter:
+          toStateData: .scafolderReponse
+    transition: SearchProject
+  - name: SearchProject
+    type: operation
+    actions:
+      - name: SearchProjects
+        functionRef:
+          refName: searchProjects
+          arguments:
+            search: .repo
+            membership: true
+            per_page: 100
+        actionDataFilter:
+          toStateData: .projectsList
+    stateDataFilter:
+      output: '${ . as $state | ($state.projectsList // []) | map(select(.path_with_namespace == ($state.owner + "/" + $state.repo)))[0] as $project | $state + {project: $project} }'
+    transition: CreateBranch
+  - name: CreateBranch
+    type: operation
+    actions:
+      - name: "createBranch"
+        functionRef:
+          refName: createBranch
+          arguments:
+            id: .project.id | tostring
+            branch: .targetBranch
+            ref: .baseBranch
+    transition: CreateCommit
+  - name: CreateCommit
+    type: operation
+    actions:
+      - name: "createCommit"
+        functionRef:
+          refName: createCommit
+          arguments:
+            id: .project.id | tostring
+            branch: .targetBranch
+            commit_message: "Added/Updated multiple files via API"
+            actions: '${ .scafolderReponse.files | map({ "action": "create", "file_path": .path, "content": .content }) }'
+    transition: CreateMR
+  - name: CreateMR
+    type: operation
+    actions:
+      - name: "createMergeRequest"
+        functionRef:
+          refName: createMergeRequest
+          arguments:
+            id: .project.id | tostring
+            source_branch: .targetBranch
+            target_branch: .baseBranch
+            title: "Automated MR"
+        actionDataFilter:
+          toStateData: .mrURL
+      - name: setOutput
+        functionRef:
+          refName: successResult
+    end: true

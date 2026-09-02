@@ -1,0 +1,181 @@
+openapi: 3.0.0
+info:
+  title: GitLab API
+  version: 1.0.0
+servers:
+  - url: https://gitlab.com/api/v4
+security:
+  - BearerToken: []
+paths:
+  /projects:
+    get:
+      summary: List or search projects
+      operationId: searchProjects
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: membership
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: simple
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    path_with_namespace:
+                      type: string
+                    default_branch:
+                      type: string
+  /projects/{id}:
+  # It would be nice to use GetProject function to retrieve projectID instead of searchProjects. But...
+  # BUG: OpenAPI generator doesn't handle URL-encoded path parameters correctly
+  # See: https://github.com/OpenAPITools/openapi-generator/issues/10662
+  # It makes double encoding of the path parameter, which is not correct and it also doesn't respect openapi allowReserved field.
+    get:
+      summary: Get a project by ID or path
+      operationId: getProject
+      parameters:
+        - name: id
+          in: path
+          required: true
+          allowReserved: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Project details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  path_with_namespace:
+                    type: string
+                  default_branch:
+                    type: string
+  /projects/{id}/repository/branches:
+    post:
+      summary: Create a new branch
+      operationId: createBranch
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - branch
+                - ref
+              properties:
+                branch:
+                  type: string
+                ref:
+                  type: string
+      responses:
+        '201':
+          description: Branch created
+  /projects/{id}/repository/commits:
+    post:
+      summary: Create a new commit
+      operationId: createCommit
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch:
+                  type: string
+                commit_message:
+                  type: string
+                actions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      action:
+                        type: string
+                      file_path:
+                        type: string
+                      content:
+                        type: string
+      responses:
+        '201':
+          description: Commit created
+  /projects/{id}/merge_requests:
+    post:
+      summary: Create a merge request
+      operationId: createMergeRequest
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_branch:
+                  type: string
+                target_branch:
+                  type: string
+                title:
+                  type: string
+      responses:
+        '201':
+          description: Merge request created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  web_url:
+                    type: string
+components:
+  securitySchemes:
+    BearerToken:
+      type: http
+      scheme: bearer
+      description: Bearer Token authentication for GitLab API (GitLab supports both Bearer and Private-Token)

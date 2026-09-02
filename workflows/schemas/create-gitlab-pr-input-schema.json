@@ -1,0 +1,43 @@
+{
+  "$id": "classpath:/schemas/create-gitlab-pr-input-schema.json",
+  "title": "Workflow input data for GitLab Merge Request",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "owner": {
+      "title": "GitLab Owner/Group",
+      "description": "The owner or group name (e.g., oandriie)",
+      "type": "string"
+    },
+    "repo": {
+      "title": "GitLab Repository Name",
+      "description": "The repository name (e.g., spring-test)",
+      "type": "string"
+    },
+    "baseBranch": {
+      "title": "Target Branch",
+      "description": "The target branch for the merge request",
+      "type": "string"
+    },
+    "targetBranch": {
+      "title": "Source Branch",
+      "description": "The source branch for the merge request",
+      "type": "string"
+    },
+    "auth": {
+      "title": "Authentication",
+      "type": "string",
+      "ui:widget": "AuthRequester",
+      "ui:props": {
+        "authTokenDescriptors": [
+          {
+            "provider": "gitlab",
+            "scope": "api",
+            "tokenType": "oauth"
+          }
+        ]
+      }
+    }
+  },
+  "required": ["owner", "repo", "baseBranch", "targetBranch"]
+}
