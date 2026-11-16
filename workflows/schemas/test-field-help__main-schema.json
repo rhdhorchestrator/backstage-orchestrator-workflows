@@ -1,0 +1,276 @@
+{
+  "$id": "classpath:/schemas/test-field-help__main-schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Test Field-level Help",
+  "type": "object",
+  "description": "ui:fieldHelp on all built-in Active widgets",
+  "properties": {
+    "processName": {
+      "type": "string",
+      "title": "Process name",
+      "description": "Short always-visible description under the input (coexists with help).",
+      "default": "",
+      "ui:widget": "ActiveTextInput",
+      "ui:fieldHelp": {
+        "en": {
+          "title": "Process name",
+          "body": "Choose a **unique process name** for this run.\n\n- Visible on the run detail page\n- Use letters, numbers, and hyphens",
+          "link": {
+            "label": "Learn more",
+            "url": "https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-component"
+          }
+        },
+        "de": {
+          "title": "Process name (DE)",
+          "body": "**Hilfe (DE):** Choose a **unique process name** for this run.\n\n- Visible on the run detail page\n- Use letters, numbers, and hyphens",
+          "link": {
+            "label": "Mehr erfahren",
+            "url": "https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-component"
+          }
+        },
+        "es": {
+          "title": "Process name (ES)",
+          "body": "**Ayuda (ES):** Choose a **unique process name** for this run.\n\n- Visible on the run detail page\n- Use letters, numbers, and hyphens",
+          "link": {
+            "label": "M\u00e1s informaci\u00f3n",
+            "url": "https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-component"
+          }
+        },
+        "fr": {
+          "title": "Process name (FR)",
+          "body": "**Aide (FR):** Choose a **unique process name** for this run.\n\n- Visible on the run detail page\n- Use letters, numbers, and hyphens",
+          "link": {
+            "label": "En savoir plus",
+            "url": "https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-component"
+          }
+        },
+        "it": {
+          "title": "Process name (IT)",
+          "body": "**Aiuto (IT):** Choose a **unique process name** for this run.\n\n- Visible on the run detail page\n- Use letters, numbers, and hyphens",
+          "link": {
+            "label": "Scopri di pi\u00f9",
+            "url": "https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-component"
+          }
+        }
+      }
+    },
+    "guidance": {
+      "type": "string",
+      "title": "Guidance",
+      "ui:widget": "ActiveText",
+      "ui:props": {
+        "ui:text": "This is **static guidance** shown via ActiveText. Use the **?** icon for more help."
+      },
+      "ui:fieldHelp": {
+        "en": {
+          "title": "Guidance",
+          "body": "ActiveText displays markdown. Field help is **on-demand** and should not replace this text.",
+          "link": {
+            "label": "Learn more",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "de": {
+          "title": "Guidance (DE)",
+          "body": "**Hilfe (DE):** ActiveText displays markdown. Field help is **on-demand** and should not replace this text.",
+          "link": {
+            "label": "Mehr erfahren",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "es": {
+          "title": "Guidance (ES)",
+          "body": "**Ayuda (ES):** ActiveText displays markdown. Field help is **on-demand** and should not replace this text.",
+          "link": {
+            "label": "M\u00e1s informaci\u00f3n",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "fr": {
+          "title": "Guidance (FR)",
+          "body": "**Aide (FR):** ActiveText displays markdown. Field help is **on-demand** and should not replace this text.",
+          "link": {
+            "label": "En savoir plus",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "it": {
+          "title": "Guidance (IT)",
+          "body": "**Aiuto (IT):** ActiveText displays markdown. Field help is **on-demand** and should not replace this text.",
+          "link": {
+            "label": "Scopri di pi\u00f9",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "string",
+      "title": "Environment",
+      "description": "Select the target environment for this workflow run.",
+      "ui:widget": "ActiveDropdown",
+      "ui:props": {
+        "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/1",
+        "fetch:response:label": "['Development', 'Staging', 'Production']",
+        "fetch:response:value": "['development', 'staging', 'production']",
+        "fetch:response:default": "development",
+        "fetch:error:silent": true
+      },
+      "ui:fieldHelp": {
+        "en": {
+          "title": "Environment",
+          "body": "Pick where this workflow should run.\n\n- **Development** \u2014 safe for experiments\n- **Staging** \u2014 pre-prod validation\n- **Production** \u2014 live systems",
+          "link": {
+            "label": "Learn more",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "de": {
+          "title": "Environment (DE)",
+          "body": "**Hilfe (DE):** Pick where this workflow should run.\n\n- **Development** \u2014 safe for experiments\n- **Staging** \u2014 pre-prod validation\n- **Production** \u2014 live systems",
+          "link": {
+            "label": "Mehr erfahren",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "es": {
+          "title": "Environment (ES)",
+          "body": "**Ayuda (ES):** Pick where this workflow should run.\n\n- **Development** \u2014 safe for experiments\n- **Staging** \u2014 pre-prod validation\n- **Production** \u2014 live systems",
+          "link": {
+            "label": "M\u00e1s informaci\u00f3n",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "fr": {
+          "title": "Environment (FR)",
+          "body": "**Aide (FR):** Pick where this workflow should run.\n\n- **Development** \u2014 safe for experiments\n- **Staging** \u2014 pre-prod validation\n- **Production** \u2014 live systems",
+          "link": {
+            "label": "En savoir plus",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "it": {
+          "title": "Environment (IT)",
+          "body": "**Aiuto (IT):** Pick where this workflow should run.\n\n- **Development** \u2014 safe for experiments\n- **Staging** \u2014 pre-prod validation\n- **Production** \u2014 live systems",
+          "link": {
+            "label": "Scopri di pi\u00f9",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "title": "Tags",
+      "description": "Optional tags associated with this run.",
+      "items": {
+        "type": "string"
+      },
+      "ui:widget": "ActiveMultiSelect",
+      "ui:props": {
+        "fetch:url": "$${{backend.baseUrl}}/api/proxy/dummyjson/products/1",
+        "fetch:response:autocomplete": "['alpha', 'beta', 'gamma', 'delta']",
+        "fetch:response:value": "['alpha']",
+        "fetch:error:silent": true
+      },
+      "ui:fieldHelp": {
+        "en": {
+          "title": "Tags",
+          "body": "Select one or more tags. Help body supports **markdown** and an external doc link.",
+          "link": {
+            "label": "Learn more",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "de": {
+          "title": "Tags (DE)",
+          "body": "**Hilfe (DE):** Select one or more tags. Help body supports **markdown** and an external doc link.",
+          "link": {
+            "label": "Mehr erfahren",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "es": {
+          "title": "Tags (ES)",
+          "body": "**Ayuda (ES):** Select one or more tags. Help body supports **markdown** and an external doc link.",
+          "link": {
+            "label": "M\u00e1s informaci\u00f3n",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "fr": {
+          "title": "Tags (FR)",
+          "body": "**Aide (FR):** Select one or more tags. Help body supports **markdown** and an external doc link.",
+          "link": {
+            "label": "En savoir plus",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        },
+        "it": {
+          "title": "Tags (IT)",
+          "body": "**Aiuto (IT):** Select one or more tags. Help body supports **markdown** and an external doc link.",
+          "link": {
+            "label": "Scopri di pi\u00f9",
+            "url": "https://www.rhdhorchestrator.io/"
+          }
+        }
+      }
+    },
+    "enableNotifications": {
+      "type": "boolean",
+      "title": "Enable notifications",
+      "description": "When enabled, notify owners after the run completes.",
+      "default": false,
+      "ui:widget": "ActiveBoolean",
+      "ui:fieldHelp": {
+        "en": {
+          "title": "Enable notifications",
+          "body": "Turn this on to send a completion notification.\n\nNo auto-translation \u2014 author-provided locale text only.",
+          "link": {
+            "label": "Learn more",
+            "url": "https://backstage.io/docs/notifications/"
+          }
+        },
+        "de": {
+          "title": "Enable notifications (DE)",
+          "body": "**Hilfe (DE):** Turn this on to send a completion notification.\n\nNo auto-translation \u2014 author-provided locale text only.",
+          "link": {
+            "label": "Mehr erfahren",
+            "url": "https://backstage.io/docs/notifications/"
+          }
+        },
+        "es": {
+          "title": "Enable notifications (ES)",
+          "body": "**Ayuda (ES):** Turn this on to send a completion notification.\n\nNo auto-translation \u2014 author-provided locale text only.",
+          "link": {
+            "label": "M\u00e1s informaci\u00f3n",
+            "url": "https://backstage.io/docs/notifications/"
+          }
+        },
+        "fr": {
+          "title": "Enable notifications (FR)",
+          "body": "**Aide (FR):** Turn this on to send a completion notification.\n\nNo auto-translation \u2014 author-provided locale text only.",
+          "link": {
+            "label": "En savoir plus",
+            "url": "https://backstage.io/docs/notifications/"
+          }
+        },
+        "it": {
+          "title": "Enable notifications (IT)",
+          "body": "**Aiuto (IT):** Turn this on to send a completion notification.\n\nNo auto-translation \u2014 author-provided locale text only.",
+          "link": {
+            "label": "Scopri di pi\u00f9",
+            "url": "https://backstage.io/docs/notifications/"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes",
+      "description": "Optional free-text notes. This field has NO ui:fieldHelp \u2014 no help button expected.",
+      "default": "",
+      "ui:widget": "ActiveTextInput"
+    }
+  }
+}
