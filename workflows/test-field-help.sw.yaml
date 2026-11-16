@@ -1,0 +1,36 @@
+id: test-field-help
+version: '1.0'
+specVersion: '0.8'
+name: Test Field-level Help
+description: >-
+  Active form widgets with
+  ui:fieldHelp (localized help, markdown, doc link), one field without help,
+  and English fallback when a locale translation is missing (ja omitted).
+annotations:
+  - 'workflow-type/infrastructure'
+dataInputSchema: schemas/test-field-help__main-schema.json
+extensions:
+  - extensionid: workflow-output-schema
+    outputSchema: schemas/workflow-output-schema.json
+start: StartState
+functions:
+  - name: runActionFunction
+    type: custom
+    operation: sysout
+  - name: successResult
+    type: expression
+    operation: >-
+      { "result": { "message": "Field-level help test completed successfully" } }
+states:
+  - name: StartState
+    type: operation
+    actions:
+      - name: runAction
+        functionRef:
+          refName: runActionFunction
+          arguments:
+            message: '"Workflow completed with input: " + (. | tostring)'
+      - name: setOutput
+        functionRef:
+          refName: successResult
+    end: true
